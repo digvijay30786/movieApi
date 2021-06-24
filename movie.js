@@ -8,11 +8,8 @@ async function getData()
 
         let response = await fetch(`http://www.omdbapi.com/?apikey=98f40ed9&s=${movie}`);
         let data = await response.json();
-        console.log(data.Search);
         showdata(data.Search);
-    
-       
-                
+         
     }
     catch (e)
     {
@@ -54,9 +51,13 @@ function showdata(el)
     
     
 
-    el.forEach(function (d)
+    el.forEach(async function (d)
     {
-        let div = document.createElement('div');
+    
+        let response = await fetch(`http://www.omdbapi.com/?apikey=98f40ed9&i=${d.imdbID}`);
+        let data = await response.json();
+
+    let div = document.createElement('div');
 
     let img = document.createElement('img');
 
@@ -79,7 +80,20 @@ function showdata(el)
 
     p2.innerHTML = `<b>Type :</b> ${d.Type}`;
 
-    div2.append(p, p1, p2);
+        let p3 = document.createElement('p');
+        
+        if (data.imdbRating > 8.5)
+        {
+            
+            p3.innerHTML = `<b>rating :</b> ${data.imdbRating} <b style=color:green>Block buster</b>`;
+        }
+        else
+        {
+            p3.innerHTML = `<b>rating :</b> ${data.imdbRating}`;
+        }
+   
+
+    div2.append(p, p1, p2,p3);
     
     div.append(img, div2);
     
